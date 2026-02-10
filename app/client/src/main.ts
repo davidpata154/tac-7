@@ -119,15 +119,46 @@ function initializeRandomQueryButton() {
   });
 }
 
+// Attach drag-drop handlers to an element
+function attachDragDropHandlers(element: HTMLElement, originalContent: string) {
+  let dragoverContent = 'Drop to create table';
+
+  element.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    element.classList.add('dragover');
+    element.textContent = dragoverContent;
+  });
+
+  element.addEventListener('dragleave', (e) => {
+    // Only remove dragover if we're leaving the element itself, not a child
+    if (e.target === element) {
+      element.classList.remove('dragover');
+      element.innerHTML = originalContent;
+    }
+  });
+
+  element.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    element.classList.remove('dragover');
+    element.innerHTML = originalContent;
+
+    const files = e.dataTransfer?.files;
+    if (files && files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  });
+}
+
 // File Upload Functionality
 function initializeFileUpload() {
   const dropZone = document.getElementById('drop-zone') as HTMLDivElement;
   const fileInput = document.getElementById('file-input') as HTMLInputElement;
   const browseButton = document.getElementById('browse-button') as HTMLButtonElement;
-  
+  const sampleDataSection = document.querySelector('.sample-data-section') as HTMLElement;
+
   // Browse button click
   browseButton.addEventListener('click', () => fileInput.click());
-  
+
   // File input change
   fileInput.addEventListener('change', (e) => {
     const files = (e.target as HTMLInputElement).files;
@@ -135,26 +166,14 @@ function initializeFileUpload() {
       handleFileUpload(files[0]);
     }
   });
-  
-  // Drag and drop
-  dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropZone.classList.add('dragover');
-  });
-  
-  dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('dragover');
-  });
-  
-  dropZone.addEventListener('drop', async (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('dragover');
-    
-    const files = e.dataTransfer?.files;
-    if (files && files.length > 0) {
-      handleFileUpload(files[0]);
-    }
-  });
+
+  // Store original content for both sections
+  const originalDropZoneContent = dropZone.innerHTML;
+  const originalSampleDataContent = sampleDataSection.innerHTML;
+
+  // Apply drag-drop handlers to both sections
+  attachDragDropHandlers(dropZone, originalDropZoneContent);
+  attachDragDropHandlers(sampleDataSection, originalSampleDataContent);
 }
 
 // Handle file upload
