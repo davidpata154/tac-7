@@ -6,7 +6,7 @@
     },
     "contextOptions": {
       "recordVideo": {
-        "dir": "./videos",
+        "dir": "/Users/david.zuluaga/Documents/Agentic code/TAC-7/tac-7/tac-7/trees/c9a10bf4/videos",
         "size": {
           "width": 1920,
           "height": 1080
