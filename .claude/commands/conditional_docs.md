@@ -61,3 +61,9 @@ This prompt helps you determine what documentation you should read based on the 
     - When working with upload button text or labeling
     - When implementing UI text changes for data upload functionality
     - When troubleshooting upload button display or terminology
+
+- app_docs/feature-d31168e4-light-green-background.md
+  - Conditions:
+    - When working with light green background styling
+    - When implementing background color changes to green variants
+    - When referencing the current background color implementation
